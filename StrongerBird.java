@@ -1,11 +1,13 @@
 import greenfoot.*;
 
-public class Bird extends Actor
+public class StrongerBird extends Actor
 {
-    public Bird()
+    private int health = 3;
+
+    public StrongerBird()
     {
         GreenfootImage image = getImage();
-        image.scale(30, 30);
+        image.scale(45, 45);
         setImage(image);
     }
 
@@ -32,10 +34,15 @@ public class Bird extends Actor
         Actor bullet = getOneIntersectingObject(Bullet.class);
         if (bullet != null)
         {
-            MyWorld world = (MyWorld) getWorld();
-            world.increaseScore();
-            getWorld().removeObject(this);
+            health--;
             getWorld().removeObject(bullet);
+            if (health <= 0)
+            {
+                MyWorld world = (MyWorld) getWorld();
+                world.increaseScore();
+                world.addObject(new BuffShield(), getX(), getY());
+                getWorld().removeObject(this);
+            }
         }
     }
 }
